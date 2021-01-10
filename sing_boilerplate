@@ -1,0 +1,109 @@
+Bootstrap: docker
+From: nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+
+%environment
+        ### Environment variables
+
+        #Use bash as default shell
+        SHELL=/bin/bash
+
+        #Add nvidia driver paths
+        PATH="/nvbin:$PATH"
+        LD_LIBRARY_PATH="/nvlib:$LD_LIBRARY_PATH"
+
+        #Add CUDA paths
+        CPATH="/usr/local/cuda/include:$CPATH"
+        PATH="/usr/local/cuda/bin:$PATH"
+	LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+        CUDA_HOME="/usr/local/cuda"
+
+	CUDA_VISIBLE_DEVICES=0
+
+        #Add Python/conda paths
+        PATH=/miniconda3/bin:/miniconda3/condabin:$PATH
+
+        export PATH CPATH CUDA_HOME LD_LIBRARY_PATH CUDA_VISIBLE_DEVICES
+
+%setup
+        #Runs on host, path to the image / is $SINGULARITY_ROOTFS
+
+        cp environment.yml ${SINGULARITY_ROOTFS}
+        cp -R model ${SINGULARITY_ROOTFS}
+        cp -R model_wrapper ${SINGULARITY_ROOTFS}
+
+%post
+        #Post-setup script
+	. /environment
+
+        ### Create default mount paths
+        mkdir -v /scratch /data /shared /fastdata
+
+        # Nvidia Library mount paths
+        mkdir -v /nvlib /nvbin
+
+        # Make Python wrapper software paths
+        mkdir -v /software
+        mv -v /model /software
+        mv -v /model_wrapper /software
+
+        mkdir -v /build
+        mv -v /environment.yml /build/environment.yml
+
+        # Update repos
+        apt-get update && apt-get -y upgrade
+        apt-get install -y wget
+
+        ### Install Python miniconda
+        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /build/Miniconda3-latest-Linux-x86_64.sh
+
+        bash /build/Miniconda3-latest-Linux-x86_64.sh -b -p /miniconda3
+
+        export PATH=/miniconda3/bin:/miniconda3/condabin:${PATH}
+        export PYTHONPATH=/software/model_wrapper:/miniconda3/bin
+
+        conda init
+
+        conda update -n base -c defaults conda
+        echo update complete
+
+        conda env create -f /build/environment.yml
+
+        echo ". /miniconda3/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
+        echo "conda activate $(head -1 /build/environment.yml | cut -d' ' -f2)" >> $SINGULARITY_ENVIRONMENT
+
+################################################
+# Set up app shortcut for running python wrapper
+################################################
+
+%apprun autoseg
+    python /software/model_wrapper/run_wrapper.py
+
+##############################
+
+
+
+%labels
+    AUTHOR EM LoCastro (locastre@mskcc.org), Aditi Iyer (iyera@mskcc.org), Aditya Aptea (aptea@mskcc.org)
+    SINGULARITY_VERSION v5.3
+
+
+%help
+This is a boilerplate singularity recipe for building a container for deep learning auto-segmentation
+
+By downloading the software for model implementations in CERR and Singularity containers, you are agreeing to the following terms and conditions as well as to the Terms of Use of CERR software.
+
+    THE SOFTWARE IS PROVIDED ?AS IS,? AND CERR DEVELOPMENT TEAM AND ITS COLLABORATORS DO NOT MAKE ANY WARRANTY, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, NOR DO THEY ASSUME ANY LIABILITY OR RESPONSIBILITY FOR THE USE OF THIS SOFTWARE.
+
+    This software is for research purposes only and has not been approved for clinical use.
+
+    Software has not been reviewed or approved by the Food and Drug Administration, and is for non-clinical, IRB-approved Research Use Only. In no event shall data or images generated through the use of the Software be used in the provision of patient care.
+
+    You may publish papers and books using results produced using software provided that you reference the appropriate citations
+
+    YOU MAY NOT DISTRIBUTE COPIES of this software, or copies of software derived from this software, to others outside your organization without specific prior written permission from the CERR development team except where noted for specific software products.
+
+    All Technology and technical data delivered under this Agreement are subject to US export control laws and may be subject to export or import regulations in other countries. You agree to comply strictly with all such laws and regulations and acknowledge that you have the responsibility to obtain such licenses to export, re-export, or import as may be required after delivery to you.l
+
+%runscript
+    exec "$@"
+
