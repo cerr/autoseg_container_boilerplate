@@ -13,5 +13,9 @@ The main components to assemble a pipeline container for use with CERR:
 ### CERR wiki links
 * [Auto-Segmentation models](https://github.com/cerr/CERR/wiki/Auto-Segmentation-models)
   
+### Singularity Docmentation
+* [v3.5 User Guide](https://sylabs.io/guides/3.5/user-guide/)
+* [FAQ](https://sylabs.io/singularity/faq/)
+
 ### References: 
 * Aditya P. Apte, Aditi Iyer, Maria Thor, Rutu Pandya, Rabia Haq, Jue Jiang, Eve LoCastro, Amita Shukla-Dave, Nishanth Sasankan, Ying Xiao, Yu-Chi Hu, Sharif Elguindi, Harini Veeraraghavan, Jung Hun Oh, Andrew Jackson, Joseph O. Deasy, Library of deep-learning image segmentation and outcomes model-implementations, Physica Medica, Volume 73, 2020, Pages 190-196, ISSN 1120-1797, https://doi.org/10.1016/j.ejmp.2020.04.011.
