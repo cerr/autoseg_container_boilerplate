@@ -4,9 +4,10 @@ The boilerplate example code in this repository can be used for adapting home-br
 
 Please note: for optimal compatibility with the wrappers enclosed here, we suggest providing Python requirements compatible with miniconda3.
 
-The main components of a pipeline which are required by CERR:
+The main components to assemble a pipeline container for use with CERR:
   1. Python wrapper: The script which processes the input imaging data (as prepared by CERR pipeline in H5 format) using the custom network model. 
   2. Singularity container recipe: Creates the virtualized Singularity container for running the process. The container bundles the model Python wrapper and additional dependencies. The wrapper is invoked by the container as defined by the command in the %%app section of the recipe.
+  3. model_wrapper
   
 ### CERR wiki links
 * [Auto-Segmentation models](https://github.com/cerr/CERR/wiki/Auto-Segmentation-models)
