@@ -7,8 +7,8 @@ Please note: for optimal compatibility with the wrappers enclosed here, we sugge
 The main components to assemble a pipeline container for use with CERR:
   1. Python wrapper: The script which processes the input imaging data (as prepared by CERR pipeline in H5 format) using the custom network model. 
   2. Singularity container recipe script: Creates the virtualized Singularity container for running the process. The container bundles the model Python wrapper and additional dependencies. The wrapper is invoked by the container as defined by the command in the %%app section of the recipe.
-  3. model_wrapper: Folder that house the Python wrapper (1) and additional Python scripts/modules as needed by the routine
-  4. model: Folder containing the trained network weights for running the model
+  3. `model_wrapper`: Folder that house the Python wrapper (1) and additional Python scripts/modules as needed by the routine
+  4. `model`: Folder containing the trained network weights for running the model
   
 ### CERR wiki links
 * [Auto-Segmentation models](https://github.com/cerr/CERR/wiki/Auto-Segmentation-models)
