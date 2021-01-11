@@ -1,0 +1,1 @@
+contents of the model folder should contain network weights used in running the Python wrapper
