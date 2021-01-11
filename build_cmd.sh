@@ -1,10 +1,19 @@
 #!/bin/bash
-
 #
-# basic build script for SIF container
-# should be run with admin privliege
+# File:
+#	build_cmd.sh
 #
-# EM LoCastro June 2020
+# Description: 
+#	basic build script for SIF container
+# 	must be run with admin privliege
+#	adds repo name and commit hash to filename if run from within a git folder
+#
+# Input Arguments:
+# 	SINGRECIPE: This is the path to the recipe file (can be either relative or absolute path)
+#	TMPDIR: The working directory used by Singularity for building the container. This location should be on a Linux-compatible filesystem.
+#
+# Author: 
+#	EM LoCastro June 2020
 #
 #
 
@@ -14,10 +23,10 @@ TMPDIR="${2}"
 
 if [ -z "${SINGRECIPE}" ]
 then
-	echo "*****************************************************"
+	echo "******************************************************************"
 	echo "Usage:"
-	echo "	sudo ./build_cmd.sh <path-to-sing-def>"
-	echo "*****************************************************"
+	echo "	sudo ./build_cmd.sh <path-to-sing-def> <path-to-tmpdir-optional>"
+	echo "******************************************************************"
 	exit
 fi
 
