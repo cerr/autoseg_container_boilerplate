@@ -80,7 +80,8 @@ From: nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 
 ##############################
 
-
+%apprun get_hash
+    cat /model_wrapper/hash_id.txt
 
 %labels
     AUTHOR EM LoCastro (locastre@mskcc.org), Aditi Iyer (iyera@mskcc.org), Aditya Aptea (aptea@mskcc.org)
