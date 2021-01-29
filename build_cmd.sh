@@ -49,6 +49,8 @@ IDSTAMP=`git log | grep commit | head -1 | awk '{ print $2 }' | cut -c1-5`
 #full SIF filename
 SIFOUT="${REPONAME}_`basename ${SINGRECIPE}`_${IDSTAMP}.sif"
 
+#create txt file with hash information
+echo "${IDSTAMP}" > model_wrapper/hash_id.txt
 
 #build the container
 singularity build --tmpdir ${TMPDIR} ${SIFOUT} ${SINGRECIPE}
