@@ -83,7 +83,6 @@ From: nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 ##############################
 
 %apprun get_hash
-    echo Container commit hash
     cat /model_wrapper/hash_id.txt
 
 %labels
